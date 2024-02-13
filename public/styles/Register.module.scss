@@ -1,0 +1,20 @@
+/* register.module.scss */
+
+.container {
+    height: 100vh; /* Establece la altura para que cubra toda la pantalla */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("/image/6.jpg"); /* Ruta a tu imagen de fondo */
+    background-size: cover;
+    background-position: center;
+    padding: 20px; /* Ajusta el espaciado interno según sea necesario */
+  }
+  
+  .box {
+    background-color: rgba(255, 255, 255, 0.8); /* Establece un fondo semi-transparente para la caja */
+    padding: 30px;
+    border-radius: 10px; /* Agrega un borde redondeado */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Agrega una sombra */
+  }
+  

@@ -81,6 +81,7 @@ function LoginPage() {
             {error && <p className={`text-danger mt-2 ${styles["error-message"]}`}>{error}</p>}
           </form>
           <p className={`mt-3 ${styles["register-link"]}`}>
+            Don't have an account? <Link href="/Register" legacyBehavior><a>Register</a></Link>
           </p>
           <button onClick={() => router.push("/")} className={`btn btn-link ${styles["back-button"]}`}>Back to Home</button>
         </div>
