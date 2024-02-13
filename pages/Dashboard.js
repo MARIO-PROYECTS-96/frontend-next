@@ -40,6 +40,7 @@ const Dashboard = () => {
     const [showUpdateModal, setShowUpdateModal] = useState(false); // Estado para controlar la visibilidad del modal de actualización
     const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para controlar la visibilidad del modal de eliminación
     const [userIdToDelete, setUserIdToDelete] = useState(null); // Estado para almacenar el ID del usuario a eliminar
+    const [selectedUser, setSelectedUser] = useState(null); // Estado para almacenar el usuario seleccionado para actualizar
 
   // Función para obtener la lista de usuarios
   const fetchUsers = async () => {
@@ -64,17 +65,17 @@ const Dashboard = () => {
     fetchUsers();
   }, []);
 
-   // Manejadores de eventos para mostrar los modals de creación, actualización y eliminación
-   const handleAddUserClick = () => {
+  // Manejadores de eventos para mostrar los modals de creación, actualización y eliminación
+  const handleAddUserClick = () => {
     setShowCreateModal(true);
   };
 
-  const handleUpdateUserClick = () => {
-    setShowUpdateModal(true);
+  const handleUpdateUserClick = (user) => {
+    setSelectedUser(user); // Establece el usuario seleccionado para actualizar
+    setShowUpdateModal(true); // Muestra el modal de actualización
   };
 
-  // Manejador de eventos para mostrar el modal de eliminación al hacer clic en "Eliminar Usuario"
-const handleDeleteUserClick = (userId) => {
+  const handleDeleteUserClick = (userId) => {
     setUserIdToDelete(userId); // Establece el userIdToDelete para el usuario que se va a eliminar
     setShowDeleteModal(true); // Muestra el modal de eliminación
   };
@@ -167,7 +168,7 @@ const handleDeleteUserClick = (userId) => {
                     <th scope="row">{index + 1}</th>
                     <td>{user.username}</td>
                     <td>
-                      <button onClick={() => handleUpdateUserClick(user.id)} className="btn btn-success">Actualizar</button>
+                      <button onClick={() => handleUpdateUserClick(user)} className="btn btn-success">Actualizar</button>
                       <button onClick={() => handleDeleteUserClick(user.id)} className="btn btn-danger">Eliminar</button>
                     </td>
                   </tr>
@@ -182,7 +183,7 @@ const handleDeleteUserClick = (userId) => {
       </div>
       {/* Renderiza el modal de agregar usuario si showCreateModal es true */}
       {showCreateModal && <ModalCreate onClose={() => setShowCreateModal(false)} onCreateUser={handleCreateUser} />}
-      {showUpdateModal && <ModalUpdate onClose={() => setShowUpdateModal(false)} onUpdateUser={handleUpdateUser} />}
+      {showUpdateModal && <ModalUpdate onClose={() => setShowUpdateModal(false)} user={selectedUser} onUpdateUser={handleUpdateUser} />}
       {showDeleteModal && <ModalDelete onClose={() => setShowDeleteModal(false)} onDeleteUser={handleDeleteUser} userId={userIdToDelete} />}
     </div>
   );
