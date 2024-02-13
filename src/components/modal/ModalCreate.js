@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import "../modal/modal.scss"; // Importa los estilos Sass del modal
 
-const Modal = ({ onClose }) => {
+const ModalCreate = ({ onClose, onCreateUser }) => {
+  // Estados para almacenar los datos del nuevo usuario
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Manejador de evento para enviar los datos del nuevo usuario al backend
+  const handleSaveChanges = async () => {
+    try {
+      // Crear el objeto de usuario con los datos introducidos en el formulario
+      const userData = { username, password };
+      
+      // Llamar a la función onCreateUser para enviar los datos al backend
+      await onCreateUser(userData);
+
+      // Cerrar el modal después de crear el usuario exitosamente
+      onClose();
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  };
+
   return (
     <div className="modal">
       <div className="modal-dialog">
@@ -16,17 +36,29 @@ const Modal = ({ onClose }) => {
             <form>
               <div className="form-group">
                 <label htmlFor="username">Username</label>
-                <input type="text" className="form-control" id="username" />
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  id="username" 
+                  value={username} 
+                  onChange={(e) => setUsername(e.target.value)} // Actualiza el estado 'username' cuando cambia el valor del input
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="Password">Password</label>
-                <input type="password" className="form-control" id="password" />
+                <input 
+                  type="password" 
+                  className="form-control" 
+                  id="password" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} // Actualiza el estado 'password' cuando cambia el valor del input
+                />
               </div>
             </form>
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
-            <button type="button" className="btn btn-primary">Save changes</button>
+            <button type="button" className="btn btn-primary" onClick={handleSaveChanges}>Save changes</button>
           </div>
         </div>
       </div>
@@ -34,4 +66,4 @@ const Modal = ({ onClose }) => {
   );
 };
 
-export default Modal;
+export default ModalCreate;

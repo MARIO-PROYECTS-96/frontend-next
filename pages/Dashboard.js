@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ModalCreate from "../src/components/modal/ModalCreate"; // Importa el componente Modal de creación
 import ModalUpdate from "../src/components/modal/ModalUpdate"; // Importa el componente Modal de actualización
 import ModalDelete from "../src/components/modal/ModalDelete"; // Importa el componente Modal de eliminación
+
 // Función para obtener el token de autenticación del almacenamiento local
 const getToken = () => {
   return localStorage.getItem("token");
@@ -80,7 +81,6 @@ const Dashboard = () => {
     setShowDeleteModal(true); // Muestra el modal de eliminación
   };
   
-
   // Función para crear un nuevo usuario
   const handleCreateUser = async (userData) => {
     try {
@@ -96,6 +96,7 @@ const Dashboard = () => {
       }
       // Actualizar la lista de usuarios después de la creación exitosa
       fetchUsers();
+      setShowCreateModal(false); // Oculta el modal después de la creación exitosa
     } catch (error) {
       console.error("Error creating user:", error);
     }
@@ -116,6 +117,7 @@ const Dashboard = () => {
       }
       // Actualizar la lista de usuarios después de la actualización exitosa
       fetchUsers();
+      setShowUpdateModal(false); // Oculta el modal después de la actualización exitosa
     } catch (error) {
       console.error("Error updating user:", error);
     }
@@ -132,6 +134,7 @@ const Dashboard = () => {
       }
       // Actualizar la lista de usuarios después de la eliminación exitosa
       fetchUsers();
+      setShowDeleteModal(false); // Oculta el modal después de la eliminación exitosa
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -183,7 +186,9 @@ const Dashboard = () => {
       </div>
       {/* Renderiza el modal de agregar usuario si showCreateModal es true */}
       {showCreateModal && <ModalCreate onClose={() => setShowCreateModal(false)} onCreateUser={handleCreateUser} />}
+      {/* Renderiza el modal de actualización si showUpdateModal es true */}
       {showUpdateModal && <ModalUpdate onClose={() => setShowUpdateModal(false)} user={selectedUser} onUpdateUser={handleUpdateUser} />}
+      {/* Renderiza el modal de eliminación si showDeleteModal es true */}
       {showDeleteModal && <ModalDelete onClose={() => setShowDeleteModal(false)} onDeleteUser={handleDeleteUser} userId={userIdToDelete} />}
     </div>
   );
