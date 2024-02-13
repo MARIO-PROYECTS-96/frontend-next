@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModalCreate from "../src/components/modal/ModalCreate"; // Importa el componente Modal de creación
 import ModalUpdate from "../src/components/modal/ModalUpdate"; // Importa el componente Modal de actualización
@@ -34,14 +35,15 @@ const fetchWithToken = async (url, options) => {
 
 // Componente Dashboard
 const Dashboard = () => {
-    const [users, setUsers] = useState([]);
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [showCreateModal, setShowCreateModal] = useState(false); // Estado para controlar la visibilidad del modal de creación
-    const [showUpdateModal, setShowUpdateModal] = useState(false); // Estado para controlar la visibilidad del modal de actualización
-    const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para controlar la visibilidad del modal de eliminación
-    const [userIdToDelete, setUserIdToDelete] = useState(null); // Estado para almacenar el ID del usuario a eliminar
-    const [selectedUser, setSelectedUser] = useState(null); // Estado para almacenar el usuario seleccionado para actualizar
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false); // Estado para controlar la visibilidad del modal de creación
+  const [showUpdateModal, setShowUpdateModal] = useState(false); // Estado para controlar la visibilidad del modal de actualización
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para controlar la visibilidad del modal de eliminación
+  const [userIdToDelete, setUserIdToDelete] = useState(null); // Estado para almacenar el ID del usuario a eliminar
+  const [selectedUser, setSelectedUser] = useState(null); // Estado para almacenar el usuario seleccionado para actualizar
+  const router = useRouter(); // Router de Next.js
 
   // Función para obtener la lista de usuarios
   const fetchUsers = async () => {
@@ -140,11 +142,19 @@ const Dashboard = () => {
     }
   };
 
+  // Función para salir (logout)
+  const handleLogout = () => {
+    // Elimina el token de autenticación del almacenamiento local
+    localStorage.removeItem("token");
+    // Redirige al usuario a la página de inicio de sesión
+    router.push("/Login");
+  };
+
   return (
     <div className="container-fluid p-0">
       <div className="position-relative">
         <div className="position-absolute top-0 start-0 p-3">
-          <Link href="/logout" legacyBehavior><a>Logout</a></Link>
+          <button onClick={handleLogout} className="btn btn-warning">Salir</button>
         </div>
         <div className="container bg-white p-4 rounded shadow mx-auto w-75">
           <h2 className="mb-4">Dashboard</h2>
